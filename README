@@ -1,0 +1,89 @@
+// Copyright 2021 - 2022 Preda Diana 314CA
+
+Homework no. 3 - Image Editor
+
+the first step:
+i defined a struct in "photo.h" which contains 4 matrices
+which are going to represent the GRAYSCALE
+image and the three colors necesary for the RGB image
+
+the program starts by reading an action from the keyboard which can be
+LOAD, SELECT, ROTATE, CROP, APPLY, SAVE or EXIT
+
+LOAD
+
+first we free the memory if an image is already loaded
+then we read a string that contains the path of the file that needs 
+to be loaded
+to load an image we open the file, then read the magicword, the width, 
+the height and the maxvalue of the pixels
+we also check for comments
+we read the matrices different, depending on their magicword
+for the rgb type, we use 3 different matrices
+we also select the entire matrix (see select all)
+
+SELECT
+
+first we decide if the entire matrix is selected
+if the first argument is ALL, the image is fully selected
+if not we see if the coordinates are good, if they form a square
+and if they are inside the matrix
+we use an array of matrices to save the selection for later
+if the image if grayscale we have only one matrix in the sel array
+else if the image is rgb we have 3 matrices in the sel array, one for
+each color
+ 
+ROTATE
+
+the action raotate comes with an argument which represents the rotation angle
+we check if the angle is right, the only available angle are
++/-90, +/-180, +/-270, we also reduce the angle by 360
+we calculate the number of rotations that we have to make, the number is
+calculated by dividing the reduces angle by 90
+the rotation can be made only on a photo that is fully selected or on a selection
+that is a square
+we use the selection previously saved to save the rotated area in the main picture
+if the entire picture was selected, at the end of the rotation we have to change
+the coordinates and we swap the height with the width
+
+CROP
+
+we wil crop the photo to the selection made earlier
+first we will free the allocated memory
+than we will alloc the matrix using the new dimensions
+we use the selection previously saved to fill the main matrix with the new values
+we also have to change the coordinates, the height and the width
+
+APPLY
+
+this time we have to change the pixels of a coloured image to a new value
+determined by a specified formula depending on the parameter
+(EDGE, SHARPEN, BLUR, GAUSSIAN_BLUR), 
+the filter is applied on the selected area
+first, we create the 3 x 3 kernel matrix, which differs from filter to filter
+the new pixels are generated using the 3 * 3 matrix created around themselves
+using the selection, we create the new, filtered image, than we copy it in 
+the main matrix
+
+SAVE
+
+here we have an extra parameter that indices the path where the image has to be save
+it can also indicate the saving type
+if the next argument is ascii, then the picture has to be saved ascii, otherwise
+we save it binary
+then a file with the mentioned name is created
+we fill it with the image characteristics (magicword, width, height, maxvalue), then the 
+matrix is written ascii or binary, depending on the arguments
+
+EXIT
+
+at the end we free the memory allocated and we broke the loop
+
+OTHER SPECIFICATIONS:
+
+if the action is not mentioned above, the program will print "Invalid command" and 
+will wait for another command
+we also check if there is any image loaded, if it isn't the program will print 
+"No image loaded" and move on
+
+I hope this sums it all up
